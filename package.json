@@ -13,7 +13,7 @@
     "dependencies": {},
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/lhilario/zebra-browser-print-wrapper.git"
+        "url": "git+https://github.com/Izanagi95/zebra-browser-print-wrapper.git"
     },
     "keywords": [
         "zpl",
@@ -25,12 +25,12 @@
     "files": [
         "lib/**/*"
     ],
-    "author": "Luismar Hilario",
+    "author": "izanagi95",
     "license": "GPL-3.0",
     "bugs": {
-        "url": "https://github.com/lhilario/zebra-browser-print-wrapper/issues"
+        "url": "https://github.com/Izanagi95/zebra-browser-print-wrapper/issues"
     },
-    "homepage": "https://github.com/lhilario/zebra-browser-print-wrapper#readme",
+    "homepage": "https://github.com/Izanagi95/zebra-browser-print-wrapper#readme",
     "devDependencies": {
         "@types/jest": "^26.0.23",
         "jest": "^27.0.4",
