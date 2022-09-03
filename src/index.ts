@@ -50,7 +50,7 @@ export default class ZebraBrowserPrintWrapper {
         const name = this.cleanUpString(deviceRaw[1]);
         const deviceType = this.cleanUpString(deviceRaw[2]);
         const connection = this.cleanUpString(deviceRaw[3]);
-        const uid = this.cleanUpString(deviceRaw[4]);
+        const uid = this.cleanUpUid(deviceRaw[4]);
         const provider = this.cleanUpString(deviceRaw[5]);
         const manufacturer = this.cleanUpString(deviceRaw[6]);
 
@@ -77,6 +77,12 @@ export default class ZebraBrowserPrintWrapper {
 
   getPrinter = (): Device => {
     return this.device;
+  };
+
+  cleanUpUid = (str: string): string => {
+    if ((str.match(/:/g)).length > 1)
+      return str.substring(4);
+    return this.cleanUpString(str);
   };
 
   cleanUpString = (str: string): string => {
