@@ -107,16 +107,20 @@ export default class ZebraBrowserPrintWrapper {
 
     switch (media) {
       case '1':
-        errors.push('Paper out');
+        // errors.push('Paper out');
+        errors.push('Carta non rilevata');
         break;
       case '2':
-        errors.push('Ribbon Out');
+        errors.push('Nastro non posizionato bene');
+        // errors.push('Ribbon Out');
         break;
       case '4':
-        errors.push('Media Door Open');
+        errors.push('Sportello aperto');
+        // errors.push('Media Door Open');
         break;
       case '8':
-        errors.push('Cutter Fault');
+        errors.push('Malfunzionamento taglierino');
+        //errors.push('Cutter Fault');
         break;
       default:
         break;
@@ -124,25 +128,34 @@ export default class ZebraBrowserPrintWrapper {
 
     switch (head) {
       case '1':
-        errors.push('Printhead Overheating');
+        errors.push('Surriscaldamento testina di stampa');
+        // errors.push('Printhead Overheating');
         break;
       case '2':
-        errors.push('Motor Overheating');
+        errors.push('Surriscaldamento motore');
+        // errors.push('Motor Overheating');
         break;
       case '4':
-        errors.push('Printhead Fault');
+        errors.push('Malfunzionamento testina di stampa');
+        // errors.push('Printhead Fault');
         break;
       case '8':
-        errors.push('Incorrect Printhead');
+        errors.push('Testina di stampa non corretta');
+        // errors.push('Incorrect Printhead');
         break;
       default:
         break;
     }
 
-    if (pause === '1') errors.push('Printer Paused');
+    if (pause === '1') {
+      // errors.push('Printer Paused');
+      errors.push('Stampante in pausa');
+    }
 
-    if (!isReadyToPrint && errors.length === 0) errors.push('Error: Unknown Error');
-
+    if (!isReadyToPrint && errors.length === 0) {
+      // errors.push('Unknown Error');
+      errors.push('Problema di pairing con la stampante');
+    }
     return {
       isReadyToPrint,
       errors: errors.join(),
