@@ -3,6 +3,12 @@ import { API_URL } from './constants';
 import { Device } from './types';
 
 export default class ZebraBrowserPrintWrapper {
+  language: string;
+
+  constructor(language: string) {
+    this.language = language;
+  }
+
   device: Device = {} as Device;
 
   getAvailablePrinters = async () => {
@@ -26,7 +32,7 @@ export default class ZebraBrowserPrintWrapper {
 
       return new Error('No printers available');
     } catch (error) {
-      throw new Error(error);
+      throw new Error(String(error));
     }
   };
 
@@ -67,7 +73,7 @@ export default class ZebraBrowserPrintWrapper {
 
       throw new Error("There's no default printer");
     } catch (error) {
-      throw new Error(error);
+      throw new Error(String(error));
     }
   };
 
@@ -80,8 +86,7 @@ export default class ZebraBrowserPrintWrapper {
   };
 
   cleanUpUid = (str: string): string => {
-    if ((str.match(/:/g)).length > 1)
-      return str.substring(4);
+    if ((str.match(/:/g)||[]).length > 1) return str.substring(4);
     return this.cleanUpString(str);
   };
 
@@ -105,56 +110,90 @@ export default class ZebraBrowserPrintWrapper {
 
     isReadyToPrint = isError === '0';
 
-    switch (media) {
-      case '1':
-        // errors.push('Paper out');
-        errors.push('Carta non rilevata');
-        break;
-      case '2':
-        errors.push('Nastro non posizionato bene');
-        // errors.push('Ribbon Out');
-        break;
-      case '4':
-        errors.push('Sportello aperto');
-        // errors.push('Media Door Open');
-        break;
-      case '8':
-        errors.push('Malfunzionamento taglierino');
-        //errors.push('Cutter Fault');
-        break;
-      default:
-        break;
-    }
+    if (this.language === 'it') {
+      switch (media) {
+        case '1':
+          errors.push('Carta non rilevata');
+          break;
+        case '2':
+          errors.push('Nastro non posizionato bene');
+          break;
+        case '4':
+          errors.push('Sportello aperto');
+          break;
+        case '8':
+          errors.push('Malfunzionamento taglierino');
+          break;
+        default:
+          break;
+      }
 
-    switch (head) {
-      case '1':
-        errors.push('Surriscaldamento testina di stampa');
-        // errors.push('Printhead Overheating');
-        break;
-      case '2':
-        errors.push('Surriscaldamento motore');
-        // errors.push('Motor Overheating');
-        break;
-      case '4':
-        errors.push('Malfunzionamento testina di stampa');
-        // errors.push('Printhead Fault');
-        break;
-      case '8':
-        errors.push('Testina di stampa non corretta');
-        // errors.push('Incorrect Printhead');
-        break;
-      default:
-        break;
-    }
+      switch (head) {
+        case '1':
+          errors.push('Surriscaldamento testina di stampa');
+          break;
+        case '2':
+          errors.push('Surriscaldamento motore');
+          break;
+        case '4':
+          errors.push('Malfunzionamento testina di stampa');
+          break;
+        case '8':
+          errors.push('Testina di stampa non corretta');
+          break;
+        default:
+          break;
+      }
 
-    if (pause === '1') {
-      // errors.push('Printer Paused');
-      errors.push('Stampante in pausa');
-    }
+      if (pause === '1') {
+        errors.push('Stampante in pausa');
+      }
 
-    if (!isReadyToPrint && errors.length === 0) {
-      // errors.push('Unknown Error');
-      errors.push('Problema di pairing con la stampante');
+      if (!isReadyToPrint && errors.length === 0) {
+        errors.push('Problema di pairing con la stampante');
+      }
+    } else {
+      switch (media) {
+        case '1':
+          errors.push('Paper out');
+          break;
+        case '2':
+          errors.push('Ribbon Out');
+          break;
+        case '4':
+          errors.push('Media Door Open');
+          break;
+        case '8':
+          errors.push('Cutter Fault');
+          break;
+        default:
+          break;
+      }
+
+      switch (head) {
+        case '1':
+          errors.push('Printhead Overheating');
+          break;
+        case '2':
+          errors.push('Motor Overheating');
+          break;
+        case '4':
+          errors.push('Printhead Fault');
+          break;
+        case '8':
+          errors.push('Incorrect Printhead');
+          break;
+        default:
+          break;
+      }
+
+      if (pause === '1') {
+        errors.push('Printer Paused');
+      }
+
+      if (!isReadyToPrint && errors.length === 0) {
+        errors.push('Unknown Error');
+      }
     }
     return {
       isReadyToPrint,
@@ -181,7 +220,7 @@ export default class ZebraBrowserPrintWrapper {
 
       await fetch(endpoint, config);
     } catch (error) {
-      throw new Error(error);
+      throw new Error(String(error));
     }
   };
 
@@ -205,7 +244,7 @@ export default class ZebraBrowserPrintWrapper {
       const data = await res.text();
       return data;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(String(error));
     }
   };
 
@@ -213,7 +252,7 @@ export default class ZebraBrowserPrintWrapper {
     try {
       await this.write(text);
     } catch (error) {
-      throw new Error(error);
+      throw new Error(String(error));
     }
   };
 }
